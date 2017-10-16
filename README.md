@@ -11,7 +11,7 @@ The reason why this image is not posted on [Docker Hub](https://hub.docker.com) 
 1. Unzip ORDS. ex: `unzip ~/docker/ords/ords.3.0.12.263.15.32.zip ords.war`
 1. Copy `ords.war` to `docker-ords` (this cloned repo)
 
-# Build ORDS Docker Image
+## Build ORDS Docker Image
 
 Note: tagging with ORDS version number so you can have multiple ORDS images for each ORDS release.
 ```bash
