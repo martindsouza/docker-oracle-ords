@@ -1,5 +1,5 @@
 # Original source from https://github.com/lucassampsouza/ords_apex
-FROM tomcat:8.0
+FROM tomcat:8.0-jre8-alpine
 MAINTAINER Martin D'Souza <martin@talkapex.com>
 
 ENV TZ="GMT" \
