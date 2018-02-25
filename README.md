@@ -6,7 +6,7 @@ The reason why this image is not posted on [Docker Hub](https://hub.docker.com) 
 
 ## Pre-Install
 
-1. Clone this repo: `git clone git@github.com:martindsouza/docker-ords.git`
+1. Clone this repo: `git clone https://github.com/martindsouza/docker-ords.git`
 1. Download [ORDS](http://www.oracle.com/technetwork/developer-tools/rest-data-services/downloads/index.html)
 1. Unzip ORDS. ex: `unzip ~/docker/ords/ords.3.0.12.263.15.32.zip ords.war`
 1. Copy `ords.war` to `docker-ords` (this cloned repo)
