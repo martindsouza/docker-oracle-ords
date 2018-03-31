@@ -1,5 +1,5 @@
 # Original source from https://github.com/lucassampsouza/ords_apex
-FROM tomcat:8.0-jre8-alpine
+FROM openjdk:8-jre-alpine
 MAINTAINER Martin DSouza <martin@talkapex.com>
 
 ENV TZ="GMT" \
@@ -7,18 +7,25 @@ ENV TZ="GMT" \
   TOMCAT_HOME="/usr/local/tomcat" \
   APEX_PUBLIC_USER_NAME="APEX_PUBLIC_USER" \
   PLSQL_GATEWAY="true" \
-  REST_SERVICES_APEX="true" \
-  REST_SERVICES_ORDS="true"
+  REST_SERVICES_APEX="false" \
+  REST_SERVICES_ORDS="true" \
+  MIGRATE_APEX_REST="true" \
+  ORDS_DIR="/ords"
 
-COPY ["ords.war", "config_ords_and_run_catalina.sh", "/tmp/"]
-RUN mv /tmp/ords.war $TOMCAT_HOME/webapps/ && \
-  mv /tmp/config_ords_and_run_catalina.sh / && \
-  mkdir $TOMCAT_HOME/webapps/i && \
-  java -jar $TOMCAT_HOME/webapps/ords.war configdir $APEX_CONFIG_DIR && \
-  chmod +x /config_ords_and_run_catalina.sh
+COPY ["ords.war", "config-run-ords.sh", "/tmp/"]
 
-ENTRYPOINT ["/config_ords_and_run_catalina.sh"]
-VOLUME ["/usr/local/tomcat/webapps/i", "/opt"]
+WORKDIR ${ORDS_DIR}
+
+RUN mkdir $ORDS_DIR/params && \
+  mkdir $ORDS_DIR/apex-images && \
+  mv /tmp/config-run-ords.sh $ORDS_DIR/ && \
+  mv /tmp/ords.war $ORDS_DIR/ && \
+  chmod +x $ORDS_DIR/config-run-ords.sh && \
+  java -jar ords.war configdir $APEX_CONFIG_DIR
+
+ENTRYPOINT ["/ords/config-run-ords.sh"]
+
+VOLUME ["/ords/apex-images", "/opt/ords"]
 
 EXPOSE 8080
 
