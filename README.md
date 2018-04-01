@@ -99,8 +99,8 @@ docker ps
 
 # Should result in something like the following
 # Note the (healthy) status
-CONTAINER ID        IMAGE                                                        COMMAND                  CREATED             STATUS                  PORTS                               NAMES
-b7694a2d62ba        ords:17.4.1                                                  "/ords/config-run-or…"   15 hours ago        Up 15 hours (healthy)   0.0.0.0:32513->8080/tcp             ords
+CONTAINER ID  IMAGE        COMMAND                 CREATED       STATUS                  PORTS                    NAMES
+b7694a2d62ba  ords:17.4.1  "/ords/config-run-or…"  15 hours ago  Up 15 hours (healthy)   0.0.0.0:32513->8080/tcp  ords
 ```
 
 <a id="markdown-parameters" name="parameters"></a>
