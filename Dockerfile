@@ -12,21 +12,19 @@ ENV TZ="GMT" \
   MIGRATE_APEX_REST="true" \
   ORDS_DIR="/ords"
 
-COPY ["ords.war", "config-run-ords.sh", "/tmp/"]
-
 WORKDIR ${ORDS_DIR}
 
-RUN mkdir $ORDS_DIR/params && \
-  mkdir $ORDS_DIR/apex-images && \
-  mv /tmp/config-run-ords.sh $ORDS_DIR/ && \
-  mv /tmp/ords.war $ORDS_DIR/ && \
-  chmod +x $ORDS_DIR/config-run-ords.sh && \
-  java -jar ords.war configdir $APEX_CONFIG_DIR
+COPY ["ords.war", "scripts/*", "/tmp/"]
+
+RUN chmod +x /tmp/docker-run.sh && \
+  /tmp/docker-run.sh
 
 ENTRYPOINT ["/ords/config-run-ords.sh"]
 
 VOLUME ["/ords/apex-images", "/opt/ords"]
 
 EXPOSE 8080
+
+HEALTHCHECK --start-period=10s --interval=5s --retries=5 CMD curl --fail http://localhost:8080/ords || exit 1
 
 CMD ["run"]

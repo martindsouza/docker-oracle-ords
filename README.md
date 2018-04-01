@@ -7,7 +7,9 @@
 - [Run Container](#run-container)
   - [Generate Configuration](#generate-configuration)
   - [Configuration Exists](#configuration-exists)
+  - [Health Check](#health-check)
 - [Parameters](#parameters)
+- [Development](#development)
 
 <!-- /TOC -->
 
@@ -87,6 +89,20 @@ docker run -it -d \
   ords:17.4.1
 ```
 
+<a id="markdown-health-check" name="health-check"></a>
+### Health Check
+
+This container includes a healthcheck to ensure that ORDS is working properly:
+
+```bash
+docker ps
+
+# Should result in something like the following
+# Note the (healthy) status
+CONTAINER ID        IMAGE                                                        COMMAND                  CREATED             STATUS                  PORTS                               NAMES
+b7694a2d62ba        ords:17.4.1                                                  "/ords/config-run-or…"   15 hours ago        Up 15 hours (healthy)   0.0.0.0:32513->8080/tcp             ords
+```
+
 <a id="markdown-parameters" name="parameters"></a>
 ## Parameters
 Parameter | Description
@@ -105,3 +121,9 @@ Parameter | Description
 `--volume <local dir>:/ords/apex-images` | Directory that contains images for APEX
 `--volume <local dir>:/opt/ords`  | Optional: Directory to/that contains ORDS config. If this is not provided, the configuration will be saved in the container and will **not** be available if the container is deleted. If `defaults.xml` is not found in the folder ORDS will try to install.
 `-p 1234:8080`  |  Port mapping, `8080` is the port in the container and can not be modified.
+
+
+<a id="markdown-development" name="development"></a>
+## Development
+
+Please read the [development](docs/development.md) documentation for more info on how to help develop this Docker image.
