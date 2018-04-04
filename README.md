@@ -103,6 +103,16 @@ CONTAINER ID  IMAGE        COMMAND                 CREATED       STATUS         
 b7694a2d62ba  ords:17.4.1  "/ords/config-run-or…"  15 hours ago  Up 15 hours (healthy)   0.0.0.0:32513->8080/tcp  ords
 ```
 
+### Logs
+
+If you want to see the logs from ORDS that would normally output on the screen you can run:
+
+```bash
+docker logs ords
+```
+
+Where `ords` is the name of your container.
+
 <a id="markdown-parameters" name="parameters"></a>
 ## Parameters
 Parameter | Description
