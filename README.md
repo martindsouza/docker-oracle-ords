@@ -8,6 +8,7 @@
   - [Generate Configuration](#generate-configuration)
   - [Configuration Exists](#configuration-exists)
   - [Health Check](#health-check)
+  - [Logs](#logs)
 - [Parameters](#parameters)
 - [Development](#development)
 
@@ -22,7 +23,7 @@ _The reason why this image is not posted on [Docker Hub](https://hub.docker.com)
 
 1. Clone this repo: `git clone https://github.com/martindsouza/docker-ords.git`
 1. Download [ORDS](http://www.oracle.com/technetwork/developer-tools/rest-data-services/downloads/index.html)
-1. Unzip ORDS. ex: `unzip ~/docker/ords/ords.17.4.1.353.06.48.zip ords.war`
+1. Unzip ORDS. ex: `unzip ~/docker/ords/ords.18.1.1.353.06.48.zip ords.war`
 1. Copy `ords.war` to `docker-ords` (_this cloned repo_)
 
 <a id="markdown-build-ords-docker-image" name="build-ords-docker-image"></a>
@@ -31,7 +32,7 @@ _The reason why this image is not posted on [Docker Hub](https://hub.docker.com)
 Note: tagging with ORDS version number allows you to have multiple ORDS images for each ORDS release.
 
 ```bash
-ORDS_VERSION=17.4.1
+ORDS_VERSION=18.1.1
 docker build -t ords:$ORDS_VERSION .
 ```
 
@@ -60,10 +61,10 @@ docker run -it --rm \
   -e APEX_REST_PASS=oracle \
   -e ORDS_PASS=oracle \
   -e SYS_PASS=Oradoc_db1 \
-  --volume ~/Docker/ords/ords-17.4.1/config:/opt/ords \
+  --volume ~/Docker/ords/ords-18.1.1/config:/opt/ords \
   --volume ~/docker/apex/5.1.3/images:/ords/apex-images \
   -p 32513:8080 \
-  ords:17.4.1
+  ords:18.1.1
 ```
 
 On your laptop go to [localhost:32513/ords](http://localhost:32513/ords).
@@ -83,10 +84,10 @@ docker run -it -d \
   --name=ords \
   --network=oracle_network \
   -e TZ=America/Edmonton \
-  --volume ~/Docker/ords/ords-17.4.1/config:/opt/ords \
-  --volume ~/docker/apex/5.1.3/images:/ords/apex-images \
-  -p 32513:8080 \
-  ords:17.4.1
+  --volume ~/Docker/ords/ords-18.1.1/config:/opt/ords \
+  --volume ~/docker/apex/5.1.4/images:/ords/apex-images \
+  -p 32514:8080 \
+  ords:18.1.1
 ```
 
 <a id="markdown-health-check" name="health-check"></a>
@@ -100,9 +101,10 @@ docker ps
 # Should result in something like the following
 # Note the (healthy) status
 CONTAINER ID  IMAGE        COMMAND                 CREATED       STATUS                  PORTS                    NAMES
-b7694a2d62ba  ords:17.4.1  "/ords/config-run-or…"  15 hours ago  Up 15 hours (healthy)   0.0.0.0:32513->8080/tcp  ords
+b7694a2d62ba  ords:18.1.1  "/ords/config-run-or…"  15 hours ago  Up 15 hours (healthy)   0.0.0.0:32513->8080/tcp  ords
 ```
 
+<a id="markdown-logs" name="logs"></a>
 ### Logs
 
 If you want to see the logs from ORDS that would normally output on the screen you can run:
