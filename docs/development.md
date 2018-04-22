@@ -23,7 +23,7 @@ The following bash `alias` will build and run the docker image/container:
 ```bash
 alias dockertest="
 
-ORDS_VERSION=17.4.1
+ORDS_VERSION=18.1.1
 docker build -t ords:$ORDS_VERSION .
 
 docker run -it --rm \
@@ -38,10 +38,10 @@ docker run -it --rm \
   -e APEX_REST_PASS=oracle \
   -e ORDS_PASS=oracle \
   -e SYS_PASS=Oradoc_db1 \
-  --volume ~/Docker/ords/ords-17.4.1/config:/opt/ords \
+  --volume ~/Docker/ords/ords-18.1.1/config:/opt/ords \
   --volume ~/docker/apex/5.1.3/images:/ords/apex-images \
   -p 32513:8080 \
-  ords:17.4.1"
+  ords:18.1.1"
 
   dockertest
   ```
