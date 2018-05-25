@@ -21,10 +21,20 @@ _The reason why this image is not posted on [Docker Hub](https://hub.docker.com)
 <a id="markdown-pre-install" name="pre-install"></a>
 ## Pre-Install
 
-1. Clone this repo: `git clone https://github.com/martindsouza/docker-ords.git`
-1. Download [ORDS](http://www.oracle.com/technetwork/developer-tools/rest-data-services/downloads/index.html)
-1. Unzip ORDS. ex: `unzip ~/docker/ords/ords.18.1.1.353.06.48.zip ords.war`
-1. Copy `ords.war` to `docker-ords` (_this cloned repo_)
+
+Download [ORDS](http://www.oracle.com/technetwork/developer-tools/rest-data-services/downloads/index.html). I'll assume that this is stored in your `~/Downloads` directory. The downloaded file will look like `~/Downloads/ords.18.1.1.95.1251.zip`
+
+```bash
+-- Assuming that you have a folder called ~/docker/ords
+cd ~/docker/ords
+
+-- Clone this repo
+git clone https://github.com/martindsouza/docker-ords.git
+cd docker-ords
+
+-- Extract the ords.war file from the ords.zip download
+unzip ~/Downloads/ords.*.zip ords.war
+```
 
 <a id="markdown-build-ords-docker-image" name="build-ords-docker-image"></a>
 ## Build ORDS Docker Image
@@ -32,6 +42,7 @@ _The reason why this image is not posted on [Docker Hub](https://hub.docker.com)
 Note: tagging with ORDS version number allows you to have multiple ORDS images for each ORDS release.
 
 ```bash
+cd ~/docker/ords/docker-ords
 ORDS_VERSION=18.1.1
 docker build -t ords:$ORDS_VERSION .
 ```
@@ -44,12 +55,13 @@ This image allows you to run the ORDS container to either generate the ORDS conf
 <a id="markdown-generate-configuration" name="generate-configuration"></a>
 ### Generate Configuration
 
-Running the ORDS container this way will setup the ORDS configuration in the mapped volume drive (`/opt/ords`) and only needs to be run once. The following commands demonstrate how to do this. It also has an optional `--rm` parameter that will remove the container after first use. This is used since we can use a "simpler" `run` command once the ORDS configuration exists.
+Running the ORDS container this way will setup the ORDS configuration in the mapped volume drive (`/opt/ords`) and only needs to be run once. The following commands demonstrate how to do this. It also has an optional `--rm` parameter that will remove the container after first use. This is used since we can use a "simpler" `run` command once the ORDS configuration exists. It also prevents the `-e` variables which contain the passwords to be attached to a container. 
 
 ```bash
 #Note: DB_PORT is NOT the port that you mapped to your Oracle DB Docker image. It's the port that the database natively has open.
 # It's recommended to leave it as 1521
 # Optional: If DB is in another Docker machine include: --network=<docker_network_name> \
+# ~/docker/ords/ords-18.1.1/config is the directory where the ORDS configuration will be saved. If it doesn't exist Docker will create it.
 docker run -it --rm \
   --network=oracle_network \
   -e TZ=America/Edmonton \
@@ -61,7 +73,7 @@ docker run -it --rm \
   -e APEX_REST_PASS=oracle \
   -e ORDS_PASS=oracle \
   -e SYS_PASS=Oradoc_db1 \
-  --volume ~/Docker/ords/ords-18.1.1/config:/opt/ords \
+  --volume ~/docker/ords/ords-18.1.1/config:/opt/ords \
   --volume ~/docker/apex/5.1.3/images:/ords/apex-images \
   -p 32513:8080 \
   ords:18.1.1
@@ -74,7 +86,7 @@ On your laptop go to [localhost:32513/ords](http://localhost:32513/ords).
 
 In this case ORDS will assume that your configuration exists (found in the mapped `/opt/ords` folder). A few differences to note from previous `run` command:
 
-- Includes a `name` attribute. This will allow for `docker start ords` and `docker stop ords` later on
+- Includes a `name` attribute. This will allows to reference the container by name when using `docker start ords` and `docker stop ords`.
 - Does not include all database login information (since exists in configuration file)
 - Does not self-remove
 - `-d` (detached mode - optional) is used so that it does not lock the current terminal screen
@@ -84,7 +96,7 @@ docker run -it -d \
   --name=ords \
   --network=oracle_network \
   -e TZ=America/Edmonton \
-  --volume ~/Docker/ords/ords-18.1.1/config:/opt/ords \
+  --volume ~/docker/ords/ords-18.1.1/config:/opt/ords \
   --volume ~/docker/apex/5.1.4/images:/ords/apex-images \
   -p 32514:8080 \
   ords:18.1.1
