@@ -9,7 +9,7 @@
   - [Configuration Exists](#configuration-exists)
   - [Health Check](#health-check)
   - [Logs](#logs)
-- [Parameters](#parameters)
+- [Container Parameters](#container-parameters)
 - [Development](#development)
 
 <!-- /TOC -->
@@ -127,8 +127,8 @@ docker logs ords
 
 Where `ords` is the name of your container.
 
-<a id="markdown-parameters" name="parameters"></a>
-## Parameters
+<a id="markdown-container-parameters" name="container-parameters"></a>
+## Container Parameters
 Parameter | Description
 --- | ---
 `--name` | Optional: Name to label container
