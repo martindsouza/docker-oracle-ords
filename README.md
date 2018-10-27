@@ -43,7 +43,7 @@ Note: tagging with ORDS version number allows you to have multiple ORDS images f
 
 ```bash
 cd ~/docker/ords/docker-ords
-ORDS_VERSION=18.1.1
+ORDS_VERSION=18.3.0
 docker build -t ords:$ORDS_VERSION .
 ```
 

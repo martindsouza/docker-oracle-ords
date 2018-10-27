@@ -24,17 +24,15 @@ else
 	echo "db.password=$APEX_PUBLIC_USER_PASS" >> $PARAM_FILE
 	echo "db.port=$DB_PORT" >> $PARAM_FILE
 	echo "db.servicename=$DB_SERVICENAME" >> $PARAM_FILE
+	# SID doesnt work so use SERVICENAME instead
+	# echo "db.sid=$DB_SID" >> $PARAM_FILE
 	echo "db.username=$APEX_PUBLIC_USER_NAME" >> $PARAM_FILE
-	# TODO test the side being blank
-	# echo "db.sid=$DATABASE_SID" >> $PARAM_FILE
 
 	# other
 	echo "plsql.gateway.add=true" >> $PARAM_FILE
 
 	# rest
-	# TODO set to false (or test if we can use the Env )
-	# echo "rest.services.apex.add=$REST_SERVICES_APEX" >> $PARAM_FILE
-	echo "rest.services.apex.add=true" >> $PARAM_FILE
+	echo "rest.services.apex.add=$REST_SERVICES_APEX" >> $PARAM_FILE
 	echo "rest.services.ords.add=$REST_SERVICES_ORDS" >> $PARAM_FILE
 	# echo "migrate.apex.rest=$MIGRATE_APEX_REST" >> $PARAM_FILE
 
@@ -60,7 +58,12 @@ else
 	echo "sys.user=SYS" >> $PARAM_FILE
 	echo "sys.password=$SYS_PASS" >> $PARAM_FILE
 
-	java -jar ords.war install simple
+	echo "*** PARAMFILE: $PARAM_FILE"
+	# echo "*** PARAMFILE START ***"
+	# cat $PARAM_FILE
+	# echo "*** PARAMFILE END ***"
+
+	java -jar ords.war install simple --parameterFile $PARAM_FILE
 fi
 
 
