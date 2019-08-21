@@ -124,7 +124,6 @@ docker logs ords
 
 Where `ords` is the name of your container.
 
-<a id="markdown-container-parameters" name="container-parameters"></a>
 ## Container Parameters
 Parameter | Description
 --- | ---
@@ -144,7 +143,6 @@ Parameter | Description
 `-p 1234:8080`  |  Port mapping, `8080` is the port in the container and can not be modified.
 
 
-<a id="markdown-development" name="development"></a>
 ## Development
 
 Please read the [development](docs/development.md) documentation for more info on how to help develop this Docker image.
