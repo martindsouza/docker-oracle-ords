@@ -10,7 +10,9 @@ mkdir $ORDS_DIR/params
 
 # Move ORDS files
 mv /tmp/config-run-ords.sh $ORDS_DIR/
-mv /tmp/ords.war $ORDS_DIR/
+
+# This is legacy mv command. ords.war will already be in $ORDS_DIR
+# mv /tmp/ords.war $ORDS_DIR/
 
 # Set ORDS config dir
 chmod +x $ORDS_DIR/config-run-ords.sh && \

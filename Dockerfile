@@ -1,22 +1,25 @@
 # Original source from https://github.com/lucassampsouza/ords_apex
 FROM openjdk:8-jre-alpine
-MAINTAINER Martin DSouza <martin@talkapex.com>
+LABEL maintainer="Martin DSouza <martin@talkapex.com>"
 
 ENV TZ="GMT" \
   APEX_CONFIG_DIR="/opt" \
   TOMCAT_HOME="/usr/local/tomcat" \
   APEX_PUBLIC_USER_NAME="APEX_PUBLIC_USER" \
   PLSQL_GATEWAY="true" \
-  REST_SERVICES_APEX="false" \
+  REST_SERVICES_APEX="true" \
   REST_SERVICES_ORDS="true" \
   MIGRATE_APEX_REST="true" \
   ORDS_DIR="/ords"
 
 WORKDIR ${ORDS_DIR}
 
-COPY ["ords.war", "scripts/*", "/tmp/"]
+COPY ["files/ords-*.zip", "scripts/*", "/tmp/"]
 
-RUN chmod +x /tmp/docker-run.sh && \
+RUN echo "" && \
+  unzip /tmp/ords-*.zip ords.war && \
+  rm -rf /tmp/ords-*.zip && \
+  chmod +x /tmp/docker-run.sh && \
   /tmp/docker-run.sh
 
 ENTRYPOINT ["/ords/config-run-ords.sh"]

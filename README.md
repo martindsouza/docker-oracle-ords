@@ -1,6 +1,4 @@
-# ORDS Dockerfile
-
-<!-- TOC depthFrom:2 insertAnchor:true -->
+# Oracle ORDS Dockerfile
 
 - [Pre-Install](#pre-install)
 - [Build ORDS Docker Image](#build-ords-docker-image)
@@ -12,47 +10,43 @@
 - [Container Parameters](#container-parameters)
 - [Development](#development)
 
-<!-- /TOC -->
-
-This docker container will run ORDS in standalone mode.
+This docker container will run Oracle ORDS in standalone mode.
 
 _The reason why this image is not posted on [Docker Hub](https://hub.docker.com) is due to Oracle requiring that you download and accept their terms and conditions for ORDS._
 
-<a id="markdown-pre-install" name="pre-install"></a>
+
 ## Pre-Install
 
 
 Download [ORDS](http://www.oracle.com/technetwork/developer-tools/rest-data-services/downloads/index.html). I'll assume that this is stored in your `~/Downloads` directory. The downloaded file will look like `~/Downloads/ords.18.1.1.95.1251.zip`
 
 ```bash
--- Assuming that you have a folder called ~/docker/ords
-cd ~/docker/ords
-
--- Clone this repo
+# Clone this repo
 git clone https://github.com/martindsouza/docker-ords.git
 cd docker-ords
 
--- Extract the ords.war file from the ords.zip download
-unzip ~/Downloads/ords.*.zip ords.war
+# Copy the ords*.zip file to files/ folder
+# Make sure only one ords file is in files directory
+cp ~/Downloads/ords.*.zip files/
+
 ```
 
-<a id="markdown-build-ords-docker-image" name="build-ords-docker-image"></a>
 ## Build ORDS Docker Image
 
 Note: tagging with ORDS version number allows you to have multiple ORDS images for each ORDS release.
 
 ```bash
-cd ~/docker/ords/docker-ords
-ORDS_VERSION=18.3.0
-docker build -t ords:$ORDS_VERSION .
+ORDS_VERSION=19.2.0
+docker build \
+  -t oracle-ords:$ORDS_VERSION \
+  -t oracle-ords:latest \
+  .
 ```
 
-<a id="markdown-run-container" name="run-container"></a>
 ## Run Container
 
 This image allows you to run the ORDS container to either generate the ORDS configuration or use an existing one. Full explanations of all the supported [parameters](#parameters) is below.
 
-<a id="markdown-generate-configuration" name="generate-configuration"></a>
 ### Generate Configuration
 
 Running the ORDS container this way will setup the ORDS configuration in the mapped volume drive (`/opt/ords`) and only needs to be run once. The following commands demonstrate how to do this. It also has an optional `--rm` parameter that will remove the container after first use. This is used since we can use a "simpler" `run` command once the ORDS configuration exists. It also prevents the `-e` variables which contain the passwords to be attached to a container. 
@@ -62,26 +56,31 @@ Running the ORDS container this way will setup the ORDS configuration in the map
 # It's recommended to leave it as 1521
 # Optional: If DB is in another Docker machine include: --network=<docker_network_name> \
 # ~/docker/ords/ords-18.1.1/config is the directory where the ORDS configuration will be saved. If it doesn't exist Docker will create it.
+# 
+# ORACLE XE Changes:
+#
+# DB_HOSTNAME=oracle-xe \
+# DB_SERVICENAME=xepdb1 \
+#
 docker run -it --rm \
   --network=oracle_network \
   -e TZ=America/Edmonton \
-  -e DB_HOSTNAME=oracle \
+  -e DB_HOSTNAME=oracle-xe \
   -e DB_PORT=1521 \
-  -e DB_SERVICENAME=orclpdb513.localdomain \
+  -e DB_SERVICENAME=XEPDB1 \
   -e APEX_PUBLIC_USER_PASS=oracle \
   -e APEX_LISTENER_PASS=oracle \
   -e APEX_REST_PASS=oracle \
   -e ORDS_PASS=oracle \
-  -e SYS_PASS=Oradoc_db1 \
-  --volume ~/docker/ords/ords-18.1.1/config:/opt/ords \
-  --volume ~/docker/apex/5.1.3/images:/ords/apex-images \
+  -e SYS_PASS=Oracle18 \
+  --volume ~/docker/ords/19.2.0/config:/opt/ords \
+  --volume ~/docker/files/apex/19.1.0/images:/ords/apex-images \
   -p 32513:8080 \
-  ords:18.1.1
+  oracle-ords:latest
 ```
 
 On your laptop go to [localhost:32513/ords](http://localhost:32513/ords).
 
-<a id="markdown-configuration-exists" name="configuration-exists"></a>
 ### Configuration Exists
 
 In this case ORDS will assume that your configuration exists (found in the mapped `/opt/ords` folder). A few differences to note from previous `run` command:
@@ -96,13 +95,12 @@ docker run -it -d \
   --name=ords \
   --network=oracle_network \
   -e TZ=America/Edmonton \
-  --volume ~/docker/ords/ords-18.1.1/config:/opt/ords \
-  --volume ~/docker/apex/5.1.4/images:/ords/apex-images \
-  -p 32514:8080 \
-  ords:18.1.1
+  --volume ~/docker/ords/19.2.0/config:/opt/ords \
+  --volume ~/docker/files/apex/19.1.0/images:/ords/apex-images \
+  -p 32513:8080 \
+  oracle-ords:latest
 ```
 
-<a id="markdown-health-check" name="health-check"></a>
 ### Health Check
 
 This container includes a healthcheck to ensure that ORDS is working properly:
@@ -116,7 +114,6 @@ CONTAINER ID  IMAGE        COMMAND                 CREATED       STATUS         
 b7694a2d62ba  ords:18.1.1  "/ords/config-run-or…"  15 hours ago  Up 15 hours (healthy)   0.0.0.0:32513->8080/tcp  ords
 ```
 
-<a id="markdown-logs" name="logs"></a>
 ### Logs
 
 If you want to see the logs from ORDS that would normally output on the screen you can run:
