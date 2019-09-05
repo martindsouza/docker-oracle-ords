@@ -2,6 +2,8 @@
 FROM openjdk:8-jre-alpine
 LABEL maintainer="Martin DSouza <martin@talkapex.com>"
 
+RUN apk add --update curl
+
 ENV TZ="GMT" \
   APEX_CONFIG_DIR="/opt" \
   TOMCAT_HOME="/usr/local/tomcat" \
