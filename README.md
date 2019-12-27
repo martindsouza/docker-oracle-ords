@@ -141,6 +141,8 @@ Parameter | Description
 `-e APEX_REST_PASS` | `APEX_REST` password (to be created)
 `-e ORDS_PASS` | `ORDS_PUBLIC_USER` password (to be created)
 `-e SYS_PASS` | `SYS` password
+`-e REST_SQL` | REST enabled SQL. Default: `true`
+`-e FEATURE_SDW` | SQL Developer Web. Default: `true`. *Note: `REST_SQL` must be `true` as well*
 `--volume <local dir>:/ords/apex-images` | Directory that contains images for APEX
 `--volume <local dir>:/opt/ords`  | Optional: Directory to/that contains ORDS config. If this is not provided, the configuration will be saved in the container and will **not** be available if the container is deleted. If `defaults.xml` is not found in the folder ORDS will try to install.
 `-p 1234:8080`  |  Port mapping, `8080` is the port in the container and can not be modified.
