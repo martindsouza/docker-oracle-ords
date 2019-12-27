@@ -10,6 +10,9 @@ ENV TZ="GMT" \
   REST_SERVICES_APEX="true" \
   REST_SERVICES_ORDS="true" \
   MIGRATE_APEX_REST="true" \
+  # SQL Developer Web and REST enabled SQL
+  FEATURE_SDW="true" \ 
+  REST_SQL="true" \
   ORDS_DIR="/ords"
 
 WORKDIR ${ORDS_DIR}
