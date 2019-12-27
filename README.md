@@ -98,8 +98,8 @@ docker run -it -d \
   --name=ords \
   --network=oracle_network \
   -e TZ=America/Edmonton \
-  --volume ~/docker/ords/19.2.0/config:/opt/ords \
-  --volume ~/docker/files/apex/19.1.0/images:/ords/apex-images \
+  --volume ~/docker/ords/19.4.0/config:/opt/ords \
+  --volume ~/docker/files/apex/19.2.0/images:/ords/apex-images \
   -p 32513:8080 \
   oracle-ords:latest
 ```
