@@ -22,12 +22,12 @@ Download [ORDS](http://www.oracle.com/technetwork/developer-tools/rest-data-serv
 
 ```bash
 # Clone this repo
-git clone https://github.com/martindsouza/docker-ords.git
-cd docker-ords
+git clone https://github.com/martindsouza/docker-oracle-ords.git
+cd docker-oracle-ords
 
 # Copy the ords*.zip file to files/ folder
 # Make sure only one ords file is in files directory
-cp ~/Downloads/ords.*.zip files/
+cp ~/Downloads/ords-*.zip files/
 
 ```
 
