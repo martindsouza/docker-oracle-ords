@@ -36,7 +36,7 @@ cp ~/Downloads/ords-*.zip files/
 Note: tagging with ORDS version number allows you to have multiple ORDS images for each ORDS release.
 
 ```bash
-ORDS_VERSION=19.2.0
+ORDS_VERSION=19.4.0
 docker build \
   -t oracle-ords:$ORDS_VERSION \
   -t oracle-ords:latest \
@@ -62,6 +62,9 @@ Running the ORDS container this way will setup the ORDS configuration in the map
 # DB_HOSTNAME=oracle-xe \
 # DB_SERVICENAME=xepdb1 \
 #
+ORDS_CONF_DIR=~/docker/ords/19.4.0
+ORDS_APEX_IMG_DIR=~/docker/files/apex/19.2.0/images
+
 docker run -it --rm \
   --network=oracle_network \
   -e TZ=America/Edmonton \
@@ -73,13 +76,13 @@ docker run -it --rm \
   -e APEX_REST_PASS=oracle \
   -e ORDS_PASS=oracle \
   -e SYS_PASS=Oracle18 \
-  --volume ~/docker/ords/19.2.0/config:/opt/ords \
-  --volume ~/docker/files/apex/19.1.0/images:/ords/apex-images \
+  --volume $ORDS_CONF_DIR/config:/opt/ords \
+  --volume $ORDS_APEX_IMG_DIR:/ords/apex-images \
   -p 32513:8080 \
   oracle-ords:latest
 ```
 
-On your laptop go to [localhost:32513/ords](http://localhost:32513/ords).
+On your laptop go to [localhost:32513/ords](http://localhost:32513/ords). For SQL Developer Web go to: http://localhost:32513/ords/sql-developer
 
 ### Configuration Exists
 
@@ -95,8 +98,8 @@ docker run -it -d \
   --name=ords \
   --network=oracle_network \
   -e TZ=America/Edmonton \
-  --volume ~/docker/ords/19.2.0/config:/opt/ords \
-  --volume ~/docker/files/apex/19.1.0/images:/ords/apex-images \
+  --volume ~/docker/ords/19.4.0/config:/opt/ords \
+  --volume ~/docker/files/apex/19.2.0/images:/ords/apex-images \
   -p 32513:8080 \
   oracle-ords:latest
 ```
@@ -138,6 +141,8 @@ Parameter | Description
 `-e APEX_REST_PASS` | `APEX_REST` password (to be created)
 `-e ORDS_PASS` | `ORDS_PUBLIC_USER` password (to be created)
 `-e SYS_PASS` | `SYS` password
+`-e REST_SQL` | REST enabled SQL. Default: `true`
+`-e FEATURE_SDW` | SQL Developer Web. Default: `true`. *Note: `REST_SQL` must be `true` as well*
 `--volume <local dir>:/ords/apex-images` | Directory that contains images for APEX
 `--volume <local dir>:/opt/ords`  | Optional: Directory to/that contains ORDS config. If this is not provided, the configuration will be saved in the container and will **not** be available if the container is deleted. If `defaults.xml` is not found in the folder ORDS will try to install.
 `-p 1234:8080`  |  Port mapping, `8080` is the port in the container and can not be modified.

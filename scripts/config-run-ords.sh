@@ -36,6 +36,10 @@ else
 	echo "rest.services.ords.add=$REST_SERVICES_ORDS" >> $PARAM_FILE
 	# echo "migrate.apex.rest=$MIGRATE_APEX_REST" >> $PARAM_FILE
 
+	# SQL Dev Web and REST SQL
+	echo "restEnabledSql.active=$REST_SQL" >> $PARAM_FILE
+	echo "feature.sdw=$FEATURE_SDW" >> $PARAM_FILE
+
 	# schema
 	echo "schema.tablespace.default=SYSAUX" >> $PARAM_FILE
 	echo "schema.tablespace.temp=TEMP" >> $PARAM_FILE
