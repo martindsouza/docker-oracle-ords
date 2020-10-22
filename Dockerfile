@@ -19,7 +19,8 @@ WORKDIR ${ORDS_DIR}
 
 COPY ["files/ords-*.zip", "scripts/*", "/tmp/"]
 
-RUN echo "" && \
+RUN apk add --update curl && \
+  echo "" && \
   unzip /tmp/ords-*.zip ords.war && \
   rm -rf /tmp/ords-*.zip && \
   chmod +x /tmp/docker-run.sh && \
